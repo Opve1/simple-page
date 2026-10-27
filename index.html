@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一页网页 · Hello</title>
+<meta name="description" content="一个非常简单的静态页面，部署在 GitHub Pages 上。" />
+<style>
+  :root {
+    --bg-1: #0f172a;
+    --bg-2: #1e293b;
+    --fg: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --card: rgba(255, 255, 255, 0.06);
+    --line: rgba(255, 255, 255, 0.12);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg-1: #f8fafc;
+      --bg-2: #e2e8f0;
+      --fg: #0f172a;
+      --muted: #52627a;
+      --accent: #0284c7;
+      --card: rgba(255, 255, 255, 0.75);
+      --line: rgba(15, 23, 42, 0.1);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Microsoft YaHei", "PingFang SC", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-2), var(--bg-1) 60%);
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    width: min(560px, 100%);
+    padding: 40px 32px;
+    text-align: center;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.18);
+  }
+  .badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 5px 12px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+  }
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  p {
+    margin: 0 0 8px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .clock {
+    margin-top: 22px;
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 26px;
+  }
+  a {
+    padding: 10px 18px;
+    font-size: 14px;
+    color: var(--fg);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: transform .15s ease, border-color .15s ease, color .15s ease;
+  }
+  a:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+  footer {
+    margin-top: 28px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+  <main>
+    <span class="badge">GitHub Pages</span>
+    <h1>你好，这是一页网页 👋</h1>
+    <p>单个 <code>index.html</code>，没有任何依赖，纯静态托管。</p>
+    <div class="clock" id="clock">加载中…</div>
+    <div class="links">
+      <a href="https://github.com/you-kunpeng" target="_blank" rel="noopener">我的 GitHub</a>
+      <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    </div>
+    <footer>Built with a single HTML file.</footer>
+  </main>
+
+<script>
+  (function () {
+    var el = document.getElementById("clock");
+    function tick() {
+      var now = new Date();
+      el.textContent = "现在是 " + now.toLocaleString("zh-CN", { hour12: false });
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+</body>
+</html>
