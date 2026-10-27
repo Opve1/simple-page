@@ -4,7 +4,16 @@
 
 - 仓库：https://github.com/Opve1/simple-page
 - 在线地址：https://opve1.github.io/simple-page/
-- 只有一个文件：`index.html`（内联 CSS / JS，无依赖）
+- 只有两个文件：`index.html`（内联 CSS / JS，零依赖）+ `preview.png`（分享预览图）
+
+## 这个页面有什么
+
+- 星点连线画布：鼠标推开、点击炸出星火（手机轻触同样有效）
+- 极光背景 + 网格 + 旋转光晕，卡片玻璃拟态、3D 倾斜跟随鼠标
+- 渐变流光标题、打字机副标题、实时时钟、一键复制网址
+- 响应式：手机、平板、电脑全适配；`prefers-reduced-motion` 自动降级为静态画面
+- 分享到微信/推特有预览卡（`og:image` 指向 `preview.png`）
+
 
 ## 本地预览
 

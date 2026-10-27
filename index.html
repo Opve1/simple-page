@@ -2,128 +2,545 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>一页网页 · Hello</title>
-<meta name="description" content="一个非常简单的静态页面，部署在 GitHub Pages 上。" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>一页网页 · Wow</title>
+<meta name="description" content="一个 HTML 文件，零依赖，电脑和手机都很好看。" />
+<meta name="theme-color" content="#05060a" />
+<meta name="color-scheme" content="dark" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="一页网页 · Wow" />
+<meta property="og:description" content="一个 HTML 文件，零依赖，电脑和手机都很好看。" />
+<meta property="og:image" content="https://opve1.github.io/simple-page/preview.png" />
+<meta property="og:image:width" content="1440" />
+<meta property="og:image:height" content="900" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://opve1.github.io/simple-page/preview.png" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
 <style>
   :root {
-    --bg-1: #0f172a;
-    --bg-2: #1e293b;
-    --fg: #e2e8f0;
-    --muted: #94a3b8;
-    --accent: #38bdf8;
-    --card: rgba(255, 255, 255, 0.06);
-    --line: rgba(255, 255, 255, 0.12);
+    --bg: #05060a;
+    --fg: #eef2ff;
+    --muted: #9aa6c4;
+    --c1: #38bdf8;
+    --c2: #818cf8;
+    --c3: #f472b6;
+    --line: rgba(148, 163, 255, 0.14);
+    --glass: rgba(13, 18, 38, 0.55);
+    --radius: 24px;
   }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg-1: #f8fafc;
-      --bg-2: #e2e8f0;
-      --fg: #0f172a;
-      --muted: #52627a;
-      --accent: #0284c7;
-      --card: rgba(255, 255, 255, 0.75);
-      --line: rgba(15, 23, 42, 0.1);
-    }
-  }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; margin: 0; }
+  html { color-scheme: dark; }
   body {
+    position: relative;
     display: grid;
     place-items: center;
-    padding: 24px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-      "Microsoft YaHei", "PingFang SC", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100svh;
+    padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+    overflow: hidden;
     color: var(--fg);
-    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-2), var(--bg-1) 60%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", "Hiragino Sans GB", Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(1100px 620px at 50% -12%, rgba(56,189,248,.16), transparent 62%),
+      radial-gradient(900px 620px at 12% 108%, rgba(219,39,119,.14), transparent 60%),
+      radial-gradient(760px 520px at 92% 72%, rgba(99,102,241,.16), transparent 62%),
+      var(--bg);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-  main {
-    width: min(560px, 100%);
-    padding: 40px 32px;
+
+  /* ---------- 背景：极光 + 网格 + 星点画布 ---------- */
+  .aurora { position: fixed; inset: -20%; z-index: 0; filter: blur(64px) saturate(135%); opacity: 1; pointer-events: none; }
+  .blob {
+    position: absolute;
+    width: 46vmax; height: 46vmax;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    will-change: transform;
+  }
+  .b1 { background: radial-gradient(circle at 30% 30%, #2563eb, transparent 60%); top: -6%; left: -8%; animation: drift1 26s ease-in-out infinite; }
+  .b2 { background: radial-gradient(circle at 50% 50%, #06b6d4, transparent 58%); bottom: -14%; right: -10%; opacity: .9; animation: drift2 32s ease-in-out infinite; }
+  .b3 { background: radial-gradient(circle at 50% 50%, #e11d48, transparent 60%); top: 18%; right: 4%; opacity: .7; animation: drift3 38s ease-in-out infinite; }
+  @keyframes drift1 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(12vw, 8vh, 0) scale(1.18); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); }
+    50% { transform: translate3d(-14vw, -10vh, 0) scale(1); }
+  }
+  @keyframes drift3 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(.9); }
+    50% { transform: translate3d(-8vw, 12vh, 0) scale(1.15); }
+  }
+
+  .grid {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(148,163,255,.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148,163,255,.055) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at 50% 45%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 20%, transparent 78%);
+  }
+
+  #stars { position: fixed; inset: 0; z-index: 2; display: block; width: 100%; height: 100%; }
+  /* 跟随指针的光晕 */
+  .glow {
+    position: fixed; z-index: 3; width: 520px; height: 520px; margin: -260px 0 0 -260px;
+    border-radius: 50%; pointer-events: none; opacity: 0;
+    background: radial-gradient(circle, rgba(56,189,248,.16), rgba(129,140,248,.08) 40%, transparent 68%);
+    transition: opacity .5s ease;
+    will-change: transform;
+  }
+  body.has-pointer .glow { opacity: 1; }
+
+  /* ---------- 卡片 ---------- */
+  .stage { position: relative; z-index: 4; width: min(640px, 100%); perspective: 1200px; }
+  /* 卡片背后的旋转光晕 */
+  .halo {
+    position: absolute; z-index: -1; left: 50%; top: 50%;
+    width: 118%; height: 130%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    filter: blur(52px);
+    opacity: .65;
+    background: conic-gradient(from 0deg, rgba(56,189,248,.55), rgba(129,140,248,.35), rgba(244,114,182,.5), rgba(34,211,238,.45), rgba(56,189,248,.55));
+    animation: spin 22s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes spin { to { transform: translate(-50%, -50%) rotate(1turn); } }
+
+  .card {
+    position: relative;
+    padding: clamp(28px, 5vw, 48px) clamp(22px, 5vw, 44px);
     text-align: center;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: var(--card);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.18);
+    border: 1px solid rgba(148, 163, 255, 0.22);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(20, 27, 55, .78), rgba(8, 12, 26, .86));
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow:
+      0 40px 100px -30px rgba(2, 6, 23, .95),
+      0 0 60px -18px rgba(56, 189, 248, .35),
+      0 0 0 1px rgba(255,255,255,.04) inset,
+      0 1px 0 rgba(255,255,255,.10) inset;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+    overflow: hidden;
   }
+  /* 卡片上的跟随高光 */
+  .card::after {
+    content: "";
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.10), transparent 62%);
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .card:hover::after { opacity: 1; }
+  /* 顶部渐变描边光 */
+  .card::before {
+    content: "";
+    position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+    padding: 1px;
+    background: linear-gradient(120deg, rgba(56,189,248,.55), rgba(129,140,248,.15) 38%, rgba(244,114,182,.45) 72%, rgba(56,189,248,.5));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: .9;
+  }
+
   .badge {
-    display: inline-block;
-    margin-bottom: 18px;
-    padding: 5px 12px;
-    font-size: 12px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid currentColor;
-    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px; margin-bottom: 22px;
+    font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    color: #cfe3ff;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: rgba(255,255,255,.04);
   }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #34d399;
+    box-shadow: 0 0 0 0 rgba(52,211,153,.6);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(52,211,153,.55); }
+    70% { box-shadow: 0 0 0 10px rgba(52,211,153,0); }
+    100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+  }
+
   h1 {
-    margin: 0 0 12px;
-    font-size: clamp(28px, 6vw, 40px);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    font-size: clamp(30px, 7.2vw, 54px);
+    line-height: 1.15;
+    letter-spacing: -.03em;
+    font-weight: 800;
+    background: linear-gradient(100deg, #ffffff 0%, #7dd3fc 22%, #a5b4fc 46%, #f0abfc 70%, #ffffff 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    animation: shimmer 7s ease-in-out infinite;
+    filter: drop-shadow(0 8px 34px rgba(56,189,248,.4));
   }
-  p {
-    margin: 0 0 8px;
-    font-size: 16px;
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .sub {
+    margin: 0 auto 6px; min-height: 1.7em;
+    max-width: 30ch;
+    font-size: clamp(14px, 3.4vw, 17px);
     line-height: 1.7;
     color: var(--muted);
   }
+  .sub .caret {
+    display: inline-block; width: 2px; height: 1.05em; margin-left: 3px;
+    vertical-align: -.16em; background: var(--c1); opacity: .9;
+    animation: blink 1s steps(2, start) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
   .clock {
-    margin-top: 22px;
-    font-variant-numeric: tabular-nums;
-    font-size: 14px;
-    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 20px; padding: 7px 14px;
+    font-size: 12.5px; font-variant-numeric: tabular-nums; letter-spacing: .02em;
+    color: #b9c6e6;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: rgba(255,255,255,.03);
   }
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
+  .btn {
+    position: relative; display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 22px; font-size: 14.5px; font-weight: 600;
+    color: var(--fg); text-decoration: none; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 14px;
+    background: rgba(255,255,255,.05);
+    transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    overflow: hidden;
+  }
+  .btn:hover, .btn:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(56,189,248,.55);
+    background: rgba(56,189,248,.10);
+    box-shadow: 0 12px 30px -12px rgba(56,189,248,.7);
+    outline: none;
+  }
+  .btn:active { transform: translateY(0) scale(.985); }
+  .btn.primary {
+    color: #04121f;
+    border-color: transparent;
+    background: linear-gradient(120deg, #7dd3fc, #a5b4fc 55%, #f0abfc);
+    box-shadow: 0 12px 34px -14px rgba(125,211,252,.85);
+  }
+  .btn.primary:hover { box-shadow: 0 16px 40px -12px rgba(165,180,252,.9); background: linear-gradient(120deg, #a5e4ff, #bfc9ff 55%, #fbc2ff); }
+  .btn:focus-visible { box-shadow: 0 0 0 3px rgba(56,189,248,.35); }
+
+  .foot {
     margin-top: 26px;
+    font-size: 11.5px; letter-spacing: .04em; color: rgba(154,166,196,.75);
   }
-  a {
-    padding: 10px 18px;
-    font-size: 14px;
-    color: var(--fg);
-    text-decoration: none;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    transition: transform .15s ease, border-color .15s ease, color .15s ease;
+
+  /* 入场动画 */
+  .reveal { opacity: 0; transform: translateY(14px); animation: rise .8s cubic-bezier(.2,.8,.2,1) forwards; }
+  .d1 { animation-delay: .05s; } .d2 { animation-delay: .16s; }
+  .d3 { animation-delay: .26s; } .d4 { animation-delay: .36s; }
+  .d5 { animation-delay: .46s; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  /* 提示 */
+  .hint {
+    position: fixed; z-index: 5; left: 50%; bottom: max(26px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(154,166,196,.55); white-space: nowrap; pointer-events: none;
+    animation: floaty 3.6s ease-in-out infinite;
   }
-  a:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
-  footer {
-    margin-top: 28px;
-    font-size: 12px;
-    color: var(--muted);
+  .only-touch { display: none; }
+  @media (hover: none), (pointer: coarse) {
+    .only-desktop { display: none; }
+    .only-touch { display: inline; }
+  }
+  @keyframes floaty { 0%,100% { opacity: .5; } 50% { opacity: .95; } }
+
+  @media (max-width: 420px) {
+    .actions { gap: 10px; }
+    .btn { padding: 12px 18px; font-size: 14px; flex: 1 1 44%; justify-content: center; }
+    .card { border-radius: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
-  <main>
-    <span class="badge">GitHub Pages</span>
-    <h1>你好，这是一页网页 👋</h1>
-    <p>单个 <code>index.html</code>，没有任何依赖，纯静态托管。</p>
-    <div class="clock" id="clock">加载中…</div>
-    <div class="links">
-      <a href="https://github.com/Opve1" target="_blank" rel="noopener">我的 GitHub</a>
-      <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
-    </div>
-    <footer>Built with a single HTML file.</footer>
+  <div class="aurora" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div class="grid" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="glow" id="glow" aria-hidden="true"></div>
+
+  <main class="stage">
+    <div class="halo" aria-hidden="true"></div>
+    <section class="card" id="card">
+      <span class="badge reveal d1"><span class="dot"></span>Single file · Zero deps</span>
+      <h1 class="reveal d2">你好，这是一页网页</h1>
+      <p class="sub reveal d3"><span id="typer"></span><span class="caret" aria-hidden="true"></span></p>
+      <div class="clock reveal d3" id="clock" role="timer" aria-live="off">--</div>
+      <div class="actions reveal d4">
+        <a class="btn primary" href="https://github.com/Opve1" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+          我的 GitHub
+        </a>
+        <button class="btn" id="copy" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <span id="copyLabel">复制网址</span>
+        </button>
+      </div>
+      <div class="foot reveal d5">Built with a single HTML file · <span id="year">2026</span></div>
+    </section>
   </main>
 
+  <div class="hint" aria-hidden="true"><span class="only-desktop">移动鼠标 · 点击迸发星火</span><span class="only-touch">轻触屏幕 · 看看星火</span></div>
+
 <script>
-  (function () {
-    var el = document.getElementById("clock");
-    function tick() {
-      var now = new Date();
-      el.textContent = "现在是 " + now.toLocaleString("zh-CN", { hour12: false });
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------------- 时钟 ---------------- */
+  var clockEl = document.getElementById("clock");
+  function tickClock() {
+    var d = new Date();
+    var date = d.toLocaleDateString("zh-CN", { month: "long", day: "numeric", weekday: "short" });
+    var time = d.toLocaleTimeString("zh-CN", { hour12: false });
+    clockEl.textContent = date + " · " + time;
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------------- 打字机 ---------------- */
+  var typer = document.getElementById("typer");
+  var phrases = [
+    "一个文件，没有任何依赖。",
+    "电脑、手机，打开都好看。",
+    "鼠标移过来，星星会躲开。",
+    "点一下按钮，把网址发给朋友。"
+  ];
+  if (reduce || !("textContent" in typer)) {
+    typer.textContent = phrases[0];
+  } else {
+    var pi = 0, ci = 0, deleting = false;
+    (function loop() {
+      var text = phrases[pi];
+      if (!deleting) {
+        ci++;
+        typer.textContent = text.slice(0, ci);
+        if (ci >= text.length) { deleting = true; return setTimeout(loop, 2100); }
+        return setTimeout(loop, 70 + Math.random() * 45);
+      }
+      ci--;
+      typer.textContent = text.slice(0, ci);
+      if (ci <= 0) { deleting = false; pi = (pi + 1) % phrases.length; return setTimeout(loop, 340); }
+      setTimeout(loop, 32);
+    })();
+  }
+
+  /* ---------------- 复制网址 ---------------- */
+  var copyBtn = document.getElementById("copy");
+  var copyLabel = document.getElementById("copyLabel");
+  copyBtn.addEventListener("click", function () {
+    var url = location.href;
+    var done = function () {
+      copyLabel.textContent = "已复制 ✓";
+      setTimeout(function () { copyLabel.textContent = "复制网址"; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(function () { legacyCopy(url, done); });
+    } else {
+      legacyCopy(url, done);
     }
-    tick();
-    setInterval(tick, 1000);
-  })();
+  });
+  function legacyCopy(text, done) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { copyLabel.textContent = "请手动复制"; }
+    document.body.removeChild(ta);
+  }
+
+  /* ---------------- 卡片 3D 倾斜 + 高光 ---------------- */
+  var card = document.getElementById("card");
+  var glow = document.getElementById("glow");
+  var pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false };
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  if (fine && !reduce) {
+    document.body.classList.add("has-pointer");
+    window.addEventListener("pointermove", function (e) {
+      pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true;
+      glow.style.transform = "translate3d(" + e.clientX + "px," + e.clientY + "px,0)";
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width;
+      var py = (e.clientY - r.top) / r.height;
+      var ry = (px - 0.5) * 9;
+      var rx = (0.5 - py) * 7;
+      card.style.setProperty("--rx", rx.toFixed(2) + "deg");
+      card.style.setProperty("--ry", ry.toFixed(2) + "deg");
+      card.style.setProperty("--mx", (px * 100).toFixed(1) + "%");
+      card.style.setProperty("--my", (py * 100).toFixed(1) + "%");
+    }, { passive: true });
+    document.addEventListener("pointerleave", function () {
+      card.style.setProperty("--rx", "0deg");
+      card.style.setProperty("--ry", "0deg");
+    });
+  }
+
+  /* ---------------- 星点画布 ---------------- */
+  var canvas = document.getElementById("stars");
+  var ctx = canvas.getContext("2d", { alpha: true });
+  var W = 0, H = 0, dpr = 1;
+  var dots = [], sparks = [];
+  var COLORS = ["56,189,248", "129,140,248", "244,114,182", "125,211,252"];
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build();
+  }
+
+  function build() {
+    var count = Math.round(Math.min(110, Math.max(26, (W * H) / 15000)));
+    dots = [];
+    for (var i = 0; i < count; i++) {
+      dots.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.28,
+        r: Math.random() * 1.6 + 0.6,
+        c: COLORS[(Math.random() * COLORS.length) | 0],
+        a: Math.random() * 0.45 + 0.3
+      });
+    }
+  }
+
+  function spawnSparks(x, y) {
+    if (reduce) return;
+    var n = 18;
+    for (var i = 0; i < n; i++) {
+      var ang = (Math.PI * 2 * i) / n + Math.random() * 0.5;
+      var sp = Math.random() * 2.4 + 0.9;
+      sparks.push({
+        x: x, y: y,
+        vx: Math.cos(ang) * sp,
+        vy: Math.sin(ang) * sp,
+        life: 1,
+        r: Math.random() * 1.7 + 0.7,
+        c: COLORS[(Math.random() * COLORS.length) | 0]
+      });
+    }
+    if (sparks.length > 260) sparks.splice(0, sparks.length - 260);
+  }
+
+  var linkDist = 118;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // 连线
+    for (var i = 0; i < dots.length; i++) {
+      var a = dots[i];
+      for (var j = i + 1; j < dots.length; j++) {
+        var b = dots[j];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var d2 = dx * dx + dy * dy;
+        if (d2 > linkDist * linkDist) continue;
+        var t = 1 - Math.sqrt(d2) / linkDist;
+        ctx.strokeStyle = "rgba(129,180,255," + (t * 0.19).toFixed(3) + ")";
+        ctx.lineWidth = 0.7;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    }
+
+    // 星点
+    for (var k = 0; k < dots.length; k++) {
+      var p = dots[k];
+      ctx.fillStyle = "rgba(" + p.c + "," + p.a.toFixed(2) + ")";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+      ctx.fill();
+    }
+
+    // 粒子
+    for (var s = sparks.length - 1; s >= 0; s--) {
+      var q = sparks[s];
+      q.x += q.vx; q.y += q.vy;
+      q.vx *= 0.975; q.vy *= 0.975;
+      q.vy += 0.006;
+      q.life -= 0.022;
+      if (q.life <= 0) { sparks.splice(s, 1); continue; }
+      ctx.fillStyle = "rgba(" + q.c + "," + (q.life * 0.9).toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.arc(q.x, q.y, q.r * q.life, 0, 6.2832);
+      ctx.fill();
+    }
+  }
+
+  function step() {
+    for (var i = 0; i < dots.length; i++) {
+      var p = dots[i];
+      p.x += p.vx; p.y += p.vy;
+
+      if (pointer.active) {
+        var dx = p.x - pointer.x, dy = p.y - pointer.y;
+        var d2 = dx * dx + dy * dy;
+        var R = 130;
+        if (d2 < R * R && d2 > 0.01) {
+          var f = (1 - Math.sqrt(d2) / R) * 0.55;
+          var d = Math.sqrt(d2);
+          p.x += (dx / d) * f * 2.4;
+          p.y += (dy / d) * f * 2.4;
+        }
+      }
+
+      if (p.x < -20) p.x = W + 20; else if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
+    }
+    draw();
+    raf = requestAnimationFrame(step);
+  }
+
+  var raf = null;
+  function start() { if (raf === null) raf = requestAnimationFrame(step); }
+  function stop() { if (raf !== null) { cancelAnimationFrame(raf); raf = null; } }
+
+  resize();
+  window.addEventListener("resize", function () { resize(); }, { passive: true });
+  document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+
+  window.addEventListener("pointerdown", function (e) { spawnSparks(e.clientX, e.clientY); }, { passive: true });
+
+  if (reduce) { draw(); } else { start(); }
+})();
 </script>
 </body>
 </html>
